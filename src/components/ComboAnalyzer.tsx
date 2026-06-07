@@ -7,12 +7,16 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Card, Suit, Rank, ComboType } from '../types';
 import { CardView } from './CardView';
-import { analyzeCombo, generateDeck, SUIT_NAMES, SUIT_SYMBOLS } from '../utils/cardUtils';
+import { useLanguage } from '../context/LanguageContext';
+import { analyzeCombo, generateDeck, SUIT_NAMES, SUIT_NAMES_EN, SUIT_SYMBOLS } from '../utils/cardUtils';
 import { Sparkles, Trash2, HelpCircle, Layers, CheckCircle2, AlertTriangle, Lightbulb } from 'lucide-react';
 
 export const ComboAnalyzer: React.FC = () => {
   const [selectedCards, setSelectedCards] = useState<Card[]>([]);
   const [suitFilter, setSuitFilter] = useState<Suit | 'ALL'>('ALL');
+  const { language, t } = useLanguage();
+  const isZh = language === 'zh';
+  const suitsLabel = isZh ? SUIT_NAMES : SUIT_NAMES_EN;
 
   // Complete deck of cards
   const fullDeck = useMemo(() => generateDeck(), []);
@@ -37,7 +41,7 @@ export const ComboAnalyzer: React.FC = () => {
       setSelectedCards(prev => prev.filter(c => c.id !== card.id));
     } else {
       if (selectedCards.length >= 5) {
-        // Replace the last card or prevent? Best to restrict to 5 max
+        // Limit to 5 max
         return;
       }
       setSelectedCards(prev => [...prev, card]);
@@ -109,29 +113,29 @@ export const ComboAnalyzer: React.FC = () => {
     setSelectedCards(presetCards);
   };
 
-  // Perform core analysis
-  const analysis = useMemo(() => analyzeCombo(selectedCards), [selectedCards]);
+  // Perform core analysis passing active language configuration
+  const analysis = useMemo(() => analyzeCombo(selectedCards, language), [selectedCards, language]);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       {/* LEFT: Hand Display and Analyzer Explanation (5 columns) */}
-      <div className="lg:col-span-5 bg-slate-900/60 p-5 rounded-2xl border border-slate-800 shadow-xl flex flex-col justify-between space-y-6 text-cream">
+      <div className="lg:col-span-12 xl:col-span-5 bg-slate-900/60 p-5 rounded-2xl border border-slate-800 shadow-xl flex flex-col justify-between space-y-6 text-cream">
         <div>
           <div className="flex justify-between items-center border-b border-white/10 pb-3">
             <h3 className="text-lg font-serif font-bold text-gold flex items-center gap-1.5">
               <Layers className="w-5 h-5 text-gold" />
-              我的模擬手牌：
+              {t.analyzerDeckTitle}:
               <span className="text-xs bg-forest-dark text-gold ring-1 ring-gold/15 px-2.5 py-1 rounded-full font-bold">
-                {selectedCards.length} / 5 張
+                {selectedCards.length} / 5 {isZh ? '張' : ''}
               </span>
             </h3>
             {selectedCards.length > 0 && (
               <button
                 onClick={handleClear}
-                className="text-xs text-rose-300 hover:text-rose-100 bg-rose-955/20 hover:bg-rose-900/30 px-3 py-1 rounded-md border border-rose-300/20 transition-colors flex items-center gap-1"
+                className="text-xs text-rose-300 hover:text-rose-100 bg-rose-900/20 hover:bg-rose-900/30 px-3 py-1 rounded-md border border-rose-300/20 transition-colors flex items-center gap-1 cursor-pointer"
               >
                 <Trash2 className="w-3.5 h-3.5" />
-                全部清空
+                {t.analyzerClearBtn}
               </button>
             )}
           </div>
@@ -141,8 +145,12 @@ export const ComboAnalyzer: React.FC = () => {
             {selectedCards.length === 0 ? (
               <div className="text-center text-cream/40 space-y-2 p-6 z-10">
                 <HelpCircle className="w-10 h-10 mx-auto text-gold/30" />
-                <p className="text-sm font-semibold font-serif text-gold/80">手牌空空如也</p>
-                <p className="text-xs font-light">請點選右側卡牌庫，或是套用一組下方推薦段牌型！</p>
+                <p className="text-sm font-semibold font-serif text-gold/80">
+                  {isZh ? '手牌空空如也' : 'Hand is Empty'}
+                </p>
+                <p className="text-xs font-light">
+                  {isZh ? '請點選右側卡牌庫，或是套用一組下方推薦段牌型！' : 'Please tap cards on the right or apply a quick preset hand below!'}
+                </p>
               </div>
             ) : (
               <div className="flex gap-2 justify-center flex-wrap">
@@ -170,11 +178,11 @@ export const ComboAnalyzer: React.FC = () => {
 
         {/* Analyzer verdict card */}
         <div className={`p-4 rounded-xl border ${
-          selectedCards.length === 0 ? 'bg-forest-light/10 border-gold/10' :
+          selectedCards.length === 0 ? 'bg-forest/10 border-gold/10' :
           analysis.isValid ? 'bg-gold/10 border-gold/30' : 'bg-red-950/20 border-red-900/30'
         }`}>
           <div className="flex gap-3">
-            <div className="mt-0.5">
+            <div className="mt-0.5 mt-1.5 shrink-0">
               {selectedCards.length === 0 ? (
                 <Lightbulb className="w-5 h-5 text-gold" />
               ) : analysis.isValid ? (
@@ -188,7 +196,7 @@ export const ComboAnalyzer: React.FC = () => {
                 selectedCards.length === 0 ? 'text-cream/55' :
                 analysis.isValid ? 'text-gold' : 'text-rose-300'
               }`}>
-                牌型分析結果
+                {isZh ? '牌型分析結果' : 'Combo Analysis Verdict'}
               </span>
               <h4 className="font-bold text-gold text-base font-serif">{analysis.name}</h4>
               <p className="text-xs text-cream/80 leading-relaxed font-light">{analysis.message}</p>
@@ -198,51 +206,53 @@ export const ComboAnalyzer: React.FC = () => {
       </div>
 
       {/* RIGHT: Selection Deck Keyboard (7 columns) */}
-      <div className="lg:col-span-7 bg-slate-900/60 p-5 rounded-2xl border border-slate-800 shadow-xl space-y-5 text-cream">
+      <div className="lg:col-span-12 xl:col-span-7 bg-slate-900/60 p-5 rounded-2xl border border-slate-800 shadow-xl space-y-5 text-cream">
         <h3 className="text-lg font-serif font-bold text-gold flex items-center gap-1.5 border-b border-white/10 pb-3">
           <Sparkles className="w-5 h-5 text-gold" />
-          自選卡牌庫 / 快速體驗
+          {t.analyzerTitle}
         </h3>
 
         {/* Quick presets buttons */}
         <div className="space-y-2">
-          <span className="text-xs font-bold text-gold/80 font-serif">快速推薦牌組：</span>
+          <span className="text-xs font-bold text-gold/80 font-serif">
+            {isZh ? '快速推薦牌組：' : 'Quick Preset Hands: '}
+          </span>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => applyPreset('straight_flush')}
-              className="text-xs bg-gold text-forest/90 font-serif font-extrabold px-3 py-1.5 rounded-lg hover:bg-amber-300 border border-yellow-200 shadow-md transition-colors cursor-pointer"
+              className="text-xs bg-gold text-forest/90 font-serif font-extrabold px-3 py-1.5 rounded-lg hover:bg-amber-350 border border-yellow-200 shadow-md transition-colors cursor-pointer"
             >
-              🎉 同花順 (1st)
+              🎉 {isZh ? '同花順 (1st)' : 'Straight Flush (1st)'}
             </button>
             <button
               onClick={() => applyPreset('four_of_a_kind')}
               className="text-xs bg-forest border border-gold/40 text-rose-300 font-bold px-3 py-1.5 rounded-lg hover:bg-forest-light transition-colors cursor-pointer"
             >
-              🚀 鐵支 (2nd)
+              🚀 {isZh ? '鐵支 (2nd)' : 'Four of a Kind (2nd)'}
             </button>
             <button
               onClick={() => applyPreset('full_house')}
               className="text-xs bg-forest border border-gold/40 text-amber-300 font-bold px-3 py-1.5 rounded-lg hover:bg-forest-light transition-colors cursor-pointer"
             >
-              🍕 葫蘆 (3rd)
+              🍕 {isZh ? '葫蘆 (3rd)' : 'Full House (3rd)'}
             </button>
             <button
               onClick={() => applyPreset('flush')}
               className="text-xs bg-forest border border-gold/40 text-indigo-300 font-bold px-3 py-1.5 rounded-lg hover:bg-forest-light transition-colors cursor-pointer"
             >
-              💧 同花 (4th)
+              💧 {isZh ? '同花 (4th)' : 'Flush (4th)'}
             </button>
             <button
               onClick={() => applyPreset('straight')}
               className="text-xs bg-forest border border-gold/40 text-cream font-bold px-3 py-1.5 rounded-lg hover:bg-forest-light transition-colors cursor-pointer"
             >
-              🌲 順子 (5th)
+              🌲 {isZh ? '順子 (5th)' : 'Straight (5th)'}
             </button>
             <button
               onClick={() => applyPreset('pair')}
               className="text-xs bg-forest border border-gold/40 text-yellow-300 font-bold px-3 py-1.5 rounded-lg hover:bg-forest-light transition-colors cursor-pointer"
             >
-              🍒 對子 (Pair 2)
+              🍒 {isZh ? '對子' : 'Pair'}
             </button>
           </div>
         </div>
@@ -250,22 +260,24 @@ export const ComboAnalyzer: React.FC = () => {
         {/* Filter Tab Row */}
         <div className="flex flex-wrap gap-2 border-b border-white/10 pb-3">
           <button
+            type="button"
             onClick={() => setSuitFilter('ALL')}
-            className={`text-xs px-3 py-1 rounded font-serif font-bold transition-all ${
+            className={`text-xs px-3 py-1 rounded font-serif font-bold transition-all cursor-pointer ${
               suitFilter === 'ALL' ? 'bg-gold text-forest border border-yellow-250 font-black' : 'bg-forest text-cream hover:bg-forest-light border border-gold/20'
             }`}
           >
-            全部花色
+            {t.all}
           </button>
-          {Object.values(Suit).map(s => (
+          {(Object.values(Suit) as Suit[]).map(s => (
             <button
               key={s}
+              type="button"
               onClick={() => setSuitFilter(s)}
-              className={`text-xs px-2.5 py-1 rounded font-bold transition-all ${
-                suitFilter === s ? 'bg-gold text-forest border border-yellow-250' : 'bg-forest text-cream hover:bg-forest-light border border-gold/20'
+              className={`text-xs px-2.5 py-1 rounded font-bold transition-all cursor-pointer ${
+                suitFilter === s ? 'bg-gold text-forest border border-yellow-250 font-black' : 'bg-forest text-cream hover:bg-forest-light border border-gold/20'
               }`}
             >
-              {SUIT_SYMBOLS[s]} {SUIT_NAMES[s]}
+              {SUIT_SYMBOLS[s]} {suitsLabel[s]}
             </button>
           ))}
         </div>
@@ -278,6 +290,7 @@ export const ComboAnalyzer: React.FC = () => {
             return (
               <button
                 key={card.id}
+                type="button"
                 onClick={() => handleCardToggle(card)}
                 className={`
                   p-2 flex flex-col justify-between aspect-3/4 rounded border select-none transition-all cursor-pointer
@@ -286,7 +299,7 @@ export const ComboAnalyzer: React.FC = () => {
                   ${!isSelected && isRed ? 'text-rose-450' : ''}
                   ${!isSelected && !isRed ? 'text-cream' : ''}
                 `}
-                title={`${SUIT_NAMES[card.suit]} ${card.rank}`}
+                title={`${suitsLabel[card.suit]} ${card.rank}`}
               >
                 <div className="text-[11px] leading-none font-extrabold">{card.rank}</div>
                 <div className="text-xl leading-none self-center font-serif">{SUIT_SYMBOLS[card.suit]}</div>
@@ -298,7 +311,7 @@ export const ComboAnalyzer: React.FC = () => {
           })}
         </div>
         <p className="text-[10px] text-cream/45 italic">
-          💡 小技巧：在點數選取庫中點擊卡牌即加入模擬器。隨意選取 1 - 5 張，觀賞左邊大老二評審為您提供的動態專業評定！
+          💡 {t.analyzerHelp}
         </p>
       </div>
     </div>

@@ -44,6 +44,13 @@ export const SUIT_NAMES: Record<Suit, string> = {
   [Suit.SPADE]: '黑桃',
 };
 
+export const SUIT_NAMES_EN: Record<Suit, string> = {
+  [Suit.CLUB]: 'Clubs',
+  [Suit.DIAMOND]: 'Diamonds',
+  [Suit.HEART]: 'Hearts',
+  [Suit.SPADE]: 'Spades',
+};
+
 export function getRankLabel(rank: Rank): string {
   return rank;
 }
@@ -119,15 +126,18 @@ export function isSequential(ranks: Rank[]): boolean {
 }
 
 // Full Big Two card combination analyzer
-export function analyzeCombo(cards: Card[]): ComboAnalysis {
+export function analyzeCombo(cards: Card[], lang: 'zh' | 'en' = 'zh'): ComboAnalysis {
+  const isZh = lang === 'zh';
+  const suitsDict = isZh ? SUIT_NAMES : SUIT_NAMES_EN;
+
   if (cards.length === 0) {
     return {
       type: ComboType.INVALID,
       isValid: false,
-      name: '請選擇卡牌',
+      name: isZh ? '請選擇卡牌' : 'Select Card(s)',
       rankValue: 0,
       suitValue: 0,
-      message: '點擊下方的卡牌來將其選中。',
+      message: isZh ? '點擊下方的卡牌來將其選中。' : 'Click cards below to select them.',
     };
   }
 
@@ -139,10 +149,12 @@ export function analyzeCombo(cards: Card[]): ComboAnalysis {
     return {
       type: ComboType.SINGLE,
       isValid: true,
-      name: `單張 ${getRankLabel(card.rank)}`,
+      name: isZh ? `單張 ${getRankLabel(card.rank)}` : `Single ${getRankLabel(card.rank)}`,
       rankValue: RANK_VALUES[card.rank],
       suitValue: SUIT_VALUES[card.suit],
-      message: `單張 ${getRankLabel(card.rank)}（${SUIT_NAMES[card.suit]}）。可以壓過任何更小數值或同數值但花色更低的單張。`,
+      message: isZh 
+        ? `單張 ${getRankLabel(card.rank)}（${suitsDict[card.suit]}）。可以壓過任何更小數值或同數值但花色更低的單張。`
+        : `Single ${getRankLabel(card.rank)} (${suitsDict[card.suit]}). Can override any smaller single rank or same rank with a smaller suit.`,
     };
   }
 
@@ -152,19 +164,21 @@ export function analyzeCombo(cards: Card[]): ComboAnalysis {
       return {
         type: ComboType.PAIR,
         isValid: true,
-        name: `對子 ${getRankLabel(card.rank)}`,
+        name: isZh ? `對子 ${getRankLabel(card.rank)}` : `Pair of ${getRankLabel(card.rank)}s`,
         rankValue: RANK_VALUES[card.rank],
         suitValue: SUIT_VALUES[card.suit], // Represents the highest suit in this pair
-        message: `對子 ${getRankLabel(card.rank)}（${SUIT_NAMES[sorted[0].suit]} 與 ${SUIT_NAMES[sorted[1].suit]}）。需要相同的二張牌，比牌時先比數值，若數值一樣則比花色最大的那張。`,
-      };
+        message: isZh
+          ? `對子 ${getRankLabel(card.rank)}（${suitsDict[sorted[0].suit]} 與 ${suitsDict[sorted[1].suit]}）。需要相同的二張牌，比牌時先比數值，若數值一樣則比花色最大的那張。`
+          : `Pair of ${getRankLabel(card.rank)}s (${suitsDict[sorted[0].suit]} & ${suitsDict[sorted[1].suit]}). Needs two cards of the same rank. Tied ranks are broken by the higher card's suit.`,
+       };
     }
     return {
       type: ComboType.INVALID,
       isValid: false,
-      name: '無效牌型',
+      name: isZh ? '無效牌型' : 'Invalid Combo',
       rankValue: 0,
       suitValue: 0,
-      message: '這兩張牌的點數不同，無法組成「對子」！',
+      message: isZh ? '這兩張牌的點數不同，無法組成「對子」！' : 'These two cards have different ranks and cannot form a "Pair"!',
     };
   }
 
@@ -173,19 +187,21 @@ export function analyzeCombo(cards: Card[]): ComboAnalysis {
       return {
         type: ComboType.TRIPLE,
         isValid: true,
-        name: `三條 ${getRankLabel(sorted[0].rank)}`,
+        name: isZh ? `三條 ${getRankLabel(sorted[0].rank)}` : `Triple ${getRankLabel(sorted[0].rank)}s`,
         rankValue: RANK_VALUES[sorted[0].rank],
         suitValue: 4, // Triple suit comparison usually unnecessary, or maximum suit
-        message: `三條 ${getRankLabel(sorted[0].rank)}。有些玩法只允許在出首發牌或無人壓牌時打出。比牌時直接比數值大小。`,
+        message: isZh
+          ? `三條 ${getRankLabel(sorted[0].rank)}。有些玩法只允許在出首發牌或無人壓牌時打出。比牌時直接比數值大小。`
+          : `Triple ${getRankLabel(sorted[0].rank)}s. Often only playable when starting a round. Ranks are compared directly.`,
       };
     }
     return {
       type: ComboType.INVALID,
       isValid: false,
-      name: '無效牌型',
+      name: isZh ? '無效牌型' : 'Invalid Combo',
       rankValue: 0,
       suitValue: 0,
-      message: '這三張牌的點數不完全相同，無法組成「三條」！',
+      message: isZh ? '這三張牌的點數不完全相同，無法組成「三條」！' : 'These three cards do not have the same rank and cannot form a "Triple"!',
     };
   }
 
@@ -193,10 +209,12 @@ export function analyzeCombo(cards: Card[]): ComboAnalysis {
     return {
       type: ComboType.INVALID,
       isValid: false,
-      name: '無效牌型',
+      name: isZh ? '無效牌型' : 'Invalid Combo',
       rankValue: 0,
       suitValue: 0,
-      message: '大老二裡面沒有「4張牌」的牌型。五張牌的牌型（順子、葫蘆等）必須剛好是 5 張！',
+      message: isZh 
+        ? '大老二裡面沒有「4張牌」的牌型。五張牌的牌型（順子、葫蘆等）必須剛好是 5 張！' 
+        : 'There are no 4-card combos in Big Two! Five-card hands (such as Straights/Full Houses) must consist of exactly 5 cards.',
     };
   }
 
@@ -215,10 +233,14 @@ export function analyzeCombo(cards: Card[]): ComboAnalysis {
       return {
         type: ComboType.STRAIGHT_FLUSH,
         isValid: true,
-        name: `同花順 (${SUIT_NAMES[targetCard.suit]} ${getRankLabel(sorted[0].rank)}到${getRankLabel(targetCard.rank)})`,
+        name: isZh 
+          ? `同花順 (${suitsDict[targetCard.suit]} ${getRankLabel(sorted[0].rank)}到${getRankLabel(targetCard.rank)})`
+          : `Straight Flush (${suitsDict[targetCard.suit]} ${getRankLabel(sorted[0].rank)} to ${getRankLabel(targetCard.rank)})`,
         rankValue: RANK_VALUES[targetCard.rank],
         suitValue: SUIT_VALUES[targetCard.suit],
-        message: '【同花順】五張同花色且連續的牌！大老二中的至尊牌組，可以壓過所有其他五張牌型（順子、同花、葫蘆、鐵支）。',
+        message: isZh
+          ? '【同花順】五張同花色且連續的牌！大老二中的至尊牌組，可以壓過所有其他五張牌型（順子、同花、葫蘆、鐵支）。'
+          : '[Straight Flush] Five consecutive cards of the same suit. The absolute strongest hand in Big Two, beating all other 5-card combos (Straights, Flushes, Full Houses, Four of a Kind).',
       };
     }
 
@@ -232,10 +254,12 @@ export function analyzeCombo(cards: Card[]): ComboAnalysis {
       return {
         type: ComboType.FOUR_OF_A_KIND,
         isValid: true,
-        name: `鐵支 ${getRankLabel(mainRank)} (4帶1)`,
+        name: isZh ? `鐵支 ${getRankLabel(mainRank)} (4帶1)` : `Four of a Kind ${getRankLabel(mainRank)} (4 + 1)`,
         rankValue: RANK_VALUES[mainRank],
         suitValue: 4, // Four of a kind comparison only cares about rank
-        message: `【鐵支】四張相同點數的牌加任意一張單張。極強的牌型，僅次於同花順，可以壓過順子、同花、葫蘆。`,
+        message: isZh
+          ? `【鐵支】四張相同點數的牌加任意一張單張。極強的牌型，僅次於同花順，可以壓過順子、同花、葫蘆。`
+          : `[Four of a Kind] Four cards of the same point value with any single card. Super powerful hand, only beaten by a Straight Flush. Exceeds Straights, Flushes, and Full Houses.`,
       };
     }
 
@@ -249,10 +273,12 @@ export function analyzeCombo(cards: Card[]): ComboAnalysis {
       return {
         type: ComboType.FULL_HOUSE,
         isValid: true,
-        name: `葫蘆 ${getRankLabel(tripleRank)} (3帶2)`,
+        name: isZh ? `葫蘆 ${getRankLabel(tripleRank)} (3帶2)` : `Full House of ${getRankLabel(tripleRank)}s (3 + 2)`,
         rankValue: RANK_VALUES[tripleRank],
         suitValue: 4, // Ranked by the triple
-        message: `【葫蘆】三張相同點數配上一對。比牌時以「三條」的點數判定大小。可以壓過順子和同花。`,
+        message: isZh
+          ? `【葫蘆】三張相同點數配上一對。比牌時以「三條」的點數判定大小。可以壓過順子和同花。`
+          : `[Full House] Three of a kind plus a pair. Point value of the triple determines its strength. Beats Straights and Flushes.`,
       };
     }
 
@@ -264,10 +290,12 @@ export function analyzeCombo(cards: Card[]): ComboAnalysis {
       return {
         type: ComboType.FLUSH,
         isValid: true,
-        name: `同花 (${SUIT_NAMES[highestCard.suit]})`,
+        name: isZh ? `同花 (${suitsDict[highestCard.suit]})` : `Flush (${suitsDict[highestCard.suit]})`,
         rankValue: RANK_VALUES[highestCard.rank],
         suitValue: SUIT_VALUES[highestCard.suit],
-        message: `【同花】五張花色相同的牌（非連續）。比牌時先比花色，花色一樣才比最大點數。可以壓過順子。`,
+        message: isZh
+          ? `【同花】五張花色相同的牌（非連續）。比牌時先比花色，花色一樣才比最大點數。可以壓過順子。`
+          : `[Flush] Five cards of the same suit (not sequential). Mainstream Taiwanese rule ranks flushes first by their suit, and then by the highest card's point value. Beats Straights.`,
       };
     }
 
@@ -280,20 +308,26 @@ export function analyzeCombo(cards: Card[]): ComboAnalysis {
       return {
         type: ComboType.STRAIGHT,
         isValid: true,
-        name: `順子 (點數${getRankLabel(sorted[0].rank)}到${getRankLabel(lastCard.rank)})`,
+        name: isZh 
+          ? `順子 (點數${getRankLabel(sorted[0].rank)}到${getRankLabel(lastCard.rank)})`
+          : `Straight (${getRankLabel(sorted[0].rank)} to ${getRankLabel(lastCard.rank)})`,
         rankValue: RANK_VALUES[lastCard.rank],
         suitValue: SUIT_VALUES[lastCard.suit],
-        message: `【順子】五張連續點數的牌（不同花色）。比牌時看最大那張牌的點數與花色。點數最大為帶有「2」的順子（J-Q-K-A-2）。`,
+        message: isZh
+          ? `【順子】五張連續點數的牌（不同花色）。比牌時看最大那張牌的點數與花色。點數最大為帶有「2」的順子（J-Q-K-A-2）。`
+          : `[Straight] Five sequentially numbered cards of different suits. Ranked by the point and suit values of its highest card. A straight containing 2 is the most powerful sequence (e.g. J-Q-K-A-2).`,
       };
     }
 
     return {
       type: ComboType.INVALID,
       isValid: false,
-      name: '無效牌型',
+      name: isZh ? '無效牌型' : 'Invalid Combo',
       rankValue: 0,
       suitValue: 0,
-      message: '五張牌的組合必須是「順子」、「同花」、「葫蘆」、「鐵支」或「同花順」！點擊以重新選擇。',
+      message: isZh 
+        ? '五張牌的組合必須是「順子」、「同花」、「葫蘆」、「鐵支」或「同花順」！點擊以重新選擇。'
+        : 'Five card hands must be a Straight, Flush, Full House, Four of a Kind, or Straight Flush! Select again.',
     };
   }
 
@@ -301,10 +335,12 @@ export function analyzeCombo(cards: Card[]): ComboAnalysis {
   return {
     type: ComboType.INVALID,
     isValid: false,
-    name: '牌張過多',
+    name: isZh ? '牌張過多' : 'Too Many Cards',
     rankValue: 0,
     suitValue: 0,
-    message: '大老二一次最多隻能出「五張牌」！請移除一些選中的卡牌。',
+    message: isZh 
+      ? '大老二一次最多隻能出「五張牌」！請移除一些選中的卡牌。'
+      : 'You can play at most 5 cards at a time in Big Two! Remove some cards.',
   };
 }
 
