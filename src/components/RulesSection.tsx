@@ -30,7 +30,7 @@ export const RulesSection: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Tab Selectors */}
-      <div className="flex flex-wrap justify-center gap-2 p-1.5 bg-[#0A2619] border border-gold/10 rounded-xl" id="rules-tabs">
+      <div className="flex flex-wrap justify-center gap-2 p-1.5 bg-slate-900 border border-slate-800 rounded-xl" id="rules-tabs">
         <button
           onClick={() => setActiveTab('basic')}
           className={`flex-1 min-w-[120px] py-2.5 px-4 text-sm font-semibold rounded-lg transition-all duration-200 cursor-pointer ${
@@ -81,7 +81,7 @@ export const RulesSection: React.FC = () => {
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
           {/* Card Value Hierarchy */}
-          <div className="bg-[#0F3D27] p-5 rounded-2xl border border-gold/20 shadow-xl space-y-4 text-cream">
+          <div className="bg-slate-900/60 p-5 rounded-2xl border border-slate-800 shadow-xl space-y-4 text-cream">
             <h3 className="text-lg font-serif font-bold text-gold flex items-center gap-2 border-b border-[#ffffff10] pb-2">
               <span className="p-1 px-2.5 bg-gold/15 text-gold border border-gold/30 rounded font-serif font-black">1</span>
               點數大小次序
@@ -115,7 +115,7 @@ export const RulesSection: React.FC = () => {
           </div>
 
           {/* Suit Hierarchy */}
-          <div className="bg-[#0F3D27] p-5 rounded-2xl border border-gold/20 shadow-xl space-y-4 text-cream">
+          <div className="bg-slate-900/60 p-5 rounded-2xl border border-slate-800 shadow-xl space-y-4 text-cream">
             <h3 className="text-lg font-serif font-bold text-gold flex items-center gap-2 border-b border-[#ffffff10] pb-2">
               <span className="p-1 px-2.5 bg-gold/15 text-gold border border-gold/30 rounded font-serif font-black">2</span>
               花色大小次序
@@ -129,10 +129,10 @@ export const RulesSection: React.FC = () => {
             <div className="grid grid-cols-4 gap-2 bg-forest-dark p-4 rounded-xl border border-[#ffffff05]">
               {[Suit.SPADE, Suit.HEART, Suit.DIAMOND, Suit.CLUB].map((suit, index) => {
                 const colors = {
-                  [Suit.SPADE]: { bg: 'bg-[#123122] border-gold/30', text: 'text-gold', badge: 'bg-gold text-forest' },
-                  [Suit.HEART]: { bg: 'bg-[#123122] border-[#ff0055]/30', text: 'text-rose-400', badge: 'bg-[#ff0055]/20 text-rose-400' },
-                  [Suit.DIAMOND]: { bg: 'bg-[#123122] border-[#ffaa00]/30', text: 'text-amber-400', badge: 'bg-[#ffaa00]/20 text-amber-400' },
-                  [Suit.CLUB]: { bg: 'bg-[#123122] border-[#00ff88]/20', text: 'text-emerald-400', badge: 'bg-[#00ff88]/15 text-emerald-400' },
+                  [Suit.SPADE]: { bg: 'bg-slate-800/20 border-slate-700/80', text: 'text-gold', badge: 'bg-gold/10 text-gold' },
+                  [Suit.HEART]: { bg: 'bg-slate-800/20 border-[#ff0055]/30', text: 'text-rose-400', badge: 'bg-[#ff0055]/10 text-rose-455' },
+                  [Suit.DIAMOND]: { bg: 'bg-slate-800/20 border-[#ffaa00]/30', text: 'text-amber-400', badge: 'bg-[#ffaa00]/10 text-amber-455' },
+                  [Suit.CLUB]: { bg: 'bg-slate-800/20 border-[#00ff88]/20', text: 'text-emerald-400', badge: 'bg-[#00ff88]/10 text-emerald-455' },
                 }[suit];
 
                 return (
@@ -153,7 +153,7 @@ export const RulesSection: React.FC = () => {
           </div>
 
           {/* Core Objectives */}
-          <div className="bg-[#0F3D27] p-5 rounded-2xl border border-gold/20 shadow-xl space-y-4 col-span-1 md:col-span-2 text-cream">
+          <div className="bg-slate-900/60 p-5 rounded-2xl border border-slate-800 shadow-xl space-y-4 col-span-1 md:col-span-2 text-cream">
             <h3 className="text-lg font-serif font-bold text-gold border-b border-[#ffffff10] pb-2 flex items-center gap-2">
               <span className="p-1 px-2 bg-gold/15 text-gold border border-gold/30 rounded font-serif font-black">🎯</span>
               遊戲致勝目標
@@ -195,7 +195,7 @@ export const RulesSection: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#0F3D27] p-6 rounded-2xl border border-gold/20 shadow-xl space-y-6 text-cream"
+          className="bg-slate-900/60 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-6 text-cream"
         >
           <div className="max-w-2xl mx-auto text-center space-y-2">
             <h3 className="text-xl font-serif font-bold text-gold">⚔️ 大老二「一對一」PK 模擬器</h3>
@@ -217,7 +217,7 @@ export const RulesSection: React.FC = () => {
                   <select
                     value={cardLeft.rank}
                     onChange={(e) => handleLeftRankChange(e.target.value as Rank)}
-                    className="w-full text-xs p-1.5 border border-gold/30 rounded bg-[#0A2619] text-cream font-bold focus:ring-1 focus:ring-gold"
+                    className="w-full text-xs p-1.5 border border-slate-800 rounded bg-slate-950 text-cream font-bold focus:ring-1 focus:ring-gold"
                   >
                     {Object.values(Rank).map(r => (
                       <option key={r} value={r}>點數 {r}</option>
@@ -229,7 +229,7 @@ export const RulesSection: React.FC = () => {
                   <select
                     value={cardLeft.suit}
                     onChange={(e) => handleLeftSuitChange(e.target.value as Suit)}
-                    className="w-full text-xs p-1.5 border border-gold/30 rounded bg-[#0A2619] text-cream font-bold focus:ring-1 focus:ring-gold"
+                    className="w-full text-xs p-1.5 border border-slate-800 rounded bg-slate-950 text-cream font-bold focus:ring-1 focus:ring-gold"
                   >
                     {Object.values(Suit).map(s => (
                       <option key={s} value={s}>{SUIT_NAMES[s]} {SUIT_SYMBOLS[s]}</option>
@@ -263,7 +263,7 @@ export const RulesSection: React.FC = () => {
                   <select
                     value={cardRight.rank}
                     onChange={(e) => handleRightRankChange(e.target.value as Rank)}
-                    className="w-full text-xs p-1.5 border border-gold/30 rounded bg-[#0A2619] text-cream font-bold focus:ring-1 focus:ring-gold"
+                    className="w-full text-xs p-1.5 border border-slate-800 rounded bg-slate-950 text-cream font-bold focus:ring-1 focus:ring-gold"
                   >
                     {Object.values(Rank).map(r => (
                       <option key={r} value={r}>點數 {r}</option>
@@ -275,7 +275,7 @@ export const RulesSection: React.FC = () => {
                   <select
                     value={cardRight.suit}
                     onChange={(e) => handleRightSuitChange(e.target.value as Suit)}
-                    className="w-full text-xs p-1.5 border border-gold/30 rounded bg-[#0A2619] text-cream font-bold focus:ring-1 focus:ring-gold"
+                    className="w-full text-xs p-1.5 border border-slate-800 rounded bg-slate-950 text-cream font-bold focus:ring-1 focus:ring-gold"
                   >
                     {Object.values(Suit).map(s => (
                       <option key={s} value={s}>{SUIT_NAMES[s]} {SUIT_SYMBOLS[s]}</option>
@@ -287,7 +287,7 @@ export const RulesSection: React.FC = () => {
           </div>
 
           {/* Explanation text */}
-          <div className="bg-[#123122] p-4 rounded-xl border border-gold/15 text-sm text-cream/90 space-y-1 max-w-xl mx-auto">
+          <div className="bg-slate-800/40 p-4 rounded-xl border border-slate-700/80 text-sm text-cream/90 space-y-1 max-w-xl mx-auto">
             <h4 className="font-bold text-gold flex items-center gap-1.5 font-serif">
               💡 核心比牌邏輯分析：
             </h4>
@@ -323,7 +323,7 @@ export const RulesSection: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="space-y-6"
         >
-          <div className="bg-[#0F3D27] p-5 rounded-2xl border border-gold/20 shadow-xl space-y-4 text-cream">
+          <div className="bg-slate-900/60 p-5 rounded-2xl border border-slate-800 shadow-xl space-y-4 text-cream">
             <h3 className="text-lg font-serif font-bold text-gold">🧩 高級五張牌型（在台灣最通用的主流出牌）</h3>
             <p className="text-sm text-cream/80 leading-relaxed font-light">
               大老二中除了「單張」和「對子」之外，如果你拿到 5 張牌，你可以出特別的組合。
@@ -431,7 +431,7 @@ export const RulesSection: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#0F3D27] p-5 rounded-2xl border border-gold/20 shadow-xl space-y-6 text-cream"
+          className="bg-slate-900/60 p-5 rounded-2xl border border-slate-800 shadow-xl space-y-6 text-cream"
         >
           <div className="border-l-4 border-gold pl-4 py-1">
             <h3 className="text-lg font-serif font-bold text-gold">⏱️ 大老二的回合輪轉機制</h3>

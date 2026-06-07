@@ -101,7 +101,7 @@ export default function App() {
         
         {/* Interactive Step-by-Step Intro card inside Rules */}
         {activeSegment === 'rules' && (
-          <div className="bg-gradient-to-br from-forest-dark to-[#0D3823] rounded-3xl p-6 md:p-8 text-cream shadow-2xl relative overflow-hidden border border-[#ffffff10]">
+          <div className="bg-gradient-to-br from-forest-dark to-[#1E293B] rounded-3xl p-6 md:p-8 text-cream shadow-2xl relative overflow-hidden border border-[#ffffff10]">
             <div className="absolute top-0 right-0 p-8 text-[120px] font-black font-sans leading-none text-gold/10 rotate-12 select-none pointer-events-none">
               ♠2
             </div>

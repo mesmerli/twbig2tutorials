@@ -121,7 +121,7 @@ export const QuizZone: React.FC = () => {
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
-            className="bg-[#0F3D27] p-6 rounded-2xl border border-gold/20 shadow-xl space-y-6 text-cream"
+            className="bg-slate-900/60 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-6 text-cream"
           >
             {/* Quiz Header */}
             <div className="flex justify-between items-center border-b border-white/10 pb-3">
@@ -147,18 +147,18 @@ export const QuizZone: React.FC = () => {
                 const isSelected = selectedOption === idx;
                 const isCorrect = idx === currentQuestion.correctAnswer;
                 
-                let optionStyle = 'border-gold/10 bg-[#072416] hover:bg-forest hover:border-gold/30 text-cream/90';
+                let optionStyle = 'border-slate-800 bg-slate-950 hover:bg-forest hover:border-slate-700 text-cream/90';
                 
                 if (isSubmitted) {
                   if (isCorrect) {
                      optionStyle = 'border-gold bg-gold/15 text-gold font-extrabold';
                   } else if (isSelected) {
-                    optionStyle = 'border-rose-900 bg-red-950/20 text-rose-300';
+                     optionStyle = 'border-rose-900 bg-red-950/20 text-rose-300';
                   } else {
-                    optionStyle = 'border-white/5 bg-[#072416]/40 text-cream/30 opacity-60';
+                     optionStyle = 'border-white/5 bg-slate-950/40 text-cream/30 opacity-60';
                   }
                 } else if (isSelected) {
-                  optionStyle = 'border-gold bg-[#124B30] ring-2 ring-gold/40 font-bold text-gold';
+                  optionStyle = 'border-gold bg-blue-600/20 ring-2 ring-gold/40 font-bold text-gold';
                 }
 
                 return (
@@ -245,7 +245,7 @@ export const QuizZone: React.FC = () => {
             key="quiz-outcome"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#0F3D27] p-8 rounded-2xl border border-gold/25 shadow-2xl text-center space-y-6 text-cream"
+            className="bg-slate-900/60 p-8 rounded-2xl border border-slate-800 shadow-2xl text-center space-y-6 text-cream"
           >
             <div className="max-w-md mx-auto space-y-3">
               <Award className="w-16 h-16 mx-auto text-gold fill-gold/15 animate-bounce" />
@@ -256,7 +256,7 @@ export const QuizZone: React.FC = () => {
             </div>
 
             {/* Achievement Card */}
-            <div className="p-6 bg-[#03150C] rounded-2xl border border-gold/20 relative overflow-hidden max-w-sm mx-auto">
+            <div className="p-6 bg-slate-950 rounded-2xl border border-slate-800 relative overflow-hidden max-w-sm mx-auto">
               <div className="absolute top-0 right-0 p-3 text-[50px] font-black font-sans leading-none text-gold/5 rotate-12 select-none pointer-events-none">
                 ♣♥♦♠
               </div>

@@ -115,7 +115,7 @@ export const ComboAnalyzer: React.FC = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       {/* LEFT: Hand Display and Analyzer Explanation (5 columns) */}
-      <div className="lg:col-span-5 bg-[#0F3D27] p-5 rounded-2xl border border-gold/20 shadow-xl flex flex-col justify-between space-y-6 text-cream">
+      <div className="lg:col-span-5 bg-slate-900/60 p-5 rounded-2xl border border-slate-800 shadow-xl flex flex-col justify-between space-y-6 text-cream">
         <div>
           <div className="flex justify-between items-center border-b border-white/10 pb-3">
             <h3 className="text-lg font-serif font-bold text-gold flex items-center gap-1.5">
@@ -198,7 +198,7 @@ export const ComboAnalyzer: React.FC = () => {
       </div>
 
       {/* RIGHT: Selection Deck Keyboard (7 columns) */}
-      <div className="lg:col-span-7 bg-[#0F3D27] p-5 rounded-2xl border border-gold/20 shadow-xl space-y-5 text-cream">
+      <div className="lg:col-span-7 bg-slate-900/60 p-5 rounded-2xl border border-slate-800 shadow-xl space-y-5 text-cream">
         <h3 className="text-lg font-serif font-bold text-gold flex items-center gap-1.5 border-b border-white/10 pb-3">
           <Sparkles className="w-5 h-5 text-gold" />
           自選卡牌庫 / 快速體驗

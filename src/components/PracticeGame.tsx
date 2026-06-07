@@ -163,10 +163,10 @@ export const PracticeGame: React.FC = () => {
       {!gameFinished ? (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* LEFT COLUMN: Stage Info & Wizard Assistant (5 Columns) */}
-          <div className="lg:col-span-5 flex flex-col justify-between bg-[#0F3D27] p-5 rounded-2xl border border-gold/20 shadow-xl relative overflow-hidden text-cream">
+          <div className="lg:col-span-5 flex flex-col justify-between bg-slate-900/60 p-5 rounded-2xl border border-slate-800 shadow-xl relative overflow-hidden text-cream">
             {/* Stage Progress */}
             <div className="space-y-3">
-              <div className="flex justify-between items-center bg-[#072416] p-2.5 rounded-xl border border-gold/15">
+              <div className="flex justify-between items-center bg-slate-950 p-2.5 rounded-xl border border-slate-800">
                 <span className="text-xs font-serif font-black text-gold/80 uppercase tracking-widest">
                   實戰關卡 {stage.id} / {TUTORIAL_STAGES.length}
                 </span>
@@ -241,7 +241,7 @@ export const PracticeGame: React.FC = () => {
           </div>
 
           {/* RIGHT COLUMN: Interactive Poker Table (7 Columns) */}
-          <div className="lg:col-span-7 bg-[#072416] min-h-[460px] rounded-3xl border-2 border-gold/25 shadow-2xl relative p-6 flex flex-col justify-between overflow-hidden">
+          <div className="lg:col-span-7 bg-slate-950 min-h-[460px] rounded-3xl border-2 border-slate-800 shadow-2xl relative p-6 flex flex-col justify-between overflow-hidden">
             {/* Visual Casino Felt Background texture decoration */}
             <div className="absolute inset-0 opacity-15 pointer-events-none select-none bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:16px_16px]"></div>
             
@@ -250,7 +250,7 @@ export const PracticeGame: React.FC = () => {
 
             {/* AI Enemy Top Seating (Player 3) */}
             <div className="flex flex-col items-center z-10">
-              <div className="bg-[#0A2619] text-cream py-1.5 px-4 rounded-full border border-gold/20 shadow-lg text-[11px] font-bold flex items-center gap-1.5">
+              <div className="bg-slate-900 text-cream py-1.5 px-4 rounded-full border border-slate-800 shadow-lg text-[11px] font-bold flex items-center gap-1.5">
                 <User className="w-3.5 h-3.5 text-gold" />
                 <span>Player 3 (上家 / 順時針)</span>
                 <span className="bg-forest text-gold font-extrabold px-1.5 py-0.2 rounded scale-90 border border-gold/10">
@@ -262,7 +262,7 @@ export const PracticeGame: React.FC = () => {
             {/* AI Enemies Left and Right Seats (Player 2 and Player 4) */}
             <div className="flex justify-between items-center w-full my-1 px-1 z-10">
               {/* Left Seat (Player 2) */}
-              <div className="bg-[#0A2619] text-cream py-1.5 px-3 rounded-full border border-gold/20 shadow flex items-center gap-1 text-[10px] font-bold">
+              <div className="bg-slate-900 text-cream py-1.5 px-3 rounded-full border border-slate-800 shadow flex items-center gap-1 text-[10px] font-bold">
                 <User className="w-3 h-3 text-gold" />
                 <span>Player 2:</span>
                 <span className="bg-forest px-1 rounded text-gold border border-gold/5">
@@ -271,7 +271,7 @@ export const PracticeGame: React.FC = () => {
               </div>
 
               {/* Right Seat (Player 4) */}
-              <div className="bg-[#0A2619] text-cream py-1.5 px-3 rounded-full border border-gold/20 shadow flex items-center gap-1 text-[10px] font-bold">
+              <div className="bg-slate-900 text-cream py-1.5 px-3 rounded-full border border-slate-800 shadow flex items-center gap-1 text-[10px] font-bold">
                 <User className="w-3 h-3 text-gold" />
                 <span>Player 4:</span>
                 <span className="bg-forest px-1 rounded text-gold border border-gold/5">
@@ -282,12 +282,12 @@ export const PracticeGame: React.FC = () => {
 
             {/* Core Center Match Table Area (Last Played Hand) */}
             <div className="flex flex-col items-center justify-center my-6 z-10 min-h-[140px] relative">
-              <span className="absolute -top-3.5 bg-[#0A2619] text-gold text-[10px] font-semibold tracking-widest uppercase border border-gold/20 rounded-full px-3 py-0.5">
+              <span className="absolute -top-3.5 bg-slate-900 text-gold text-[10px] font-semibold tracking-widest uppercase border border-slate-800 rounded-full px-3 py-0.5">
                 目前場上牌型 ({stage.tableComboName})
               </span>
 
               {stage.tableCards.length === 0 ? (
-                <div className="py-6 px-10 border border-dashed border-gold/20 rounded-2xl bg-[#0A2619]/60 text-center text-cream/50 max-w-[280px]">
+                <div className="py-6 px-10 border border-dashed border-slate-800 rounded-2xl bg-slate-900/60 text-center text-cream/50 max-w-[280px]">
                   <Monitor className="w-7 h-7 mx-auto text-gold mb-1.5" />
                   <p className="text-[11px] font-bold tracking-tight text-gold">桌面已清空</p>
                   <p className="text-[10px] text-cream/40 mt-1 leading-relaxed">沒有上家跟牌，您擁有自由的出牌權！</p>
@@ -303,13 +303,13 @@ export const PracticeGame: React.FC = () => {
 
             {/* Bottom Active User hand (Bottom seat) */}
             <div className="flex flex-col items-center space-y-3 z-10 relative">
-              <div className="bg-[#0A2619] border border-gold/25 text-gold text-[11px] font-bold tracking-wider px-4 py-1.5 rounded-full shadow-md flex items-center gap-1">
+              <div className="bg-slate-900 border border-slate-800 text-gold text-[11px] font-bold tracking-wider px-4 py-1.5 rounded-full shadow-md flex items-center gap-1">
                 <Star className="w-3.5 h-3.5 text-gold fill-gold" />
                 <span>我的王牌手卡（點擊進行選取）</span>
               </div>
 
               {/* Card slider display */}
-              <div className="flex gap-1.5 md:gap-2.5 justify-center max-w-full overflow-x-auto py-3 px-3 rounded-2xl bg-[#03150C] border border-gold/15">
+              <div className="flex gap-1.5 md:gap-2.5 justify-center max-w-full overflow-x-auto py-3 px-3 rounded-2xl bg-slate-950 border border-slate-800">
                 {stage.playerHand.map(card => {
                   const isSelected = selectedCards.some(c => c.id === card.id);
                   // Highlight the suggested cards so they know where to tap
@@ -334,7 +334,7 @@ export const PracticeGame: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-[#0F3D27] p-8 rounded-2xl border border-gold/25 shadow-2xl text-center space-y-6 text-cream"
+          className="bg-slate-900/60 p-8 rounded-2xl border border-slate-800 shadow-2xl text-center space-y-6 text-cream"
         >
           <div className="max-w-lg mx-auto space-y-3">
             <Trophy className="w-16 h-16 mx-auto text-gold fill-gold/20 animate-pulse" />
